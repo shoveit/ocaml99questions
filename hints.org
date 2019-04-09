@@ -1,0 +1,9 @@
+1. install utop (enhenced REPL), merlin, tuareg (in emacs), make it so much easier
+2. merlin
+   + ctr + TAB -> auto-comp
+   + C-c + C-t -> type sig
+3. tuareg
+   + C-c + C-e -> eval
+   + run-ocaml
+
+4. Batterries-include is a collection of good modules, the community's working hard to make it portable.
