@@ -5,5 +5,11 @@
 3. tuareg
    + C-c + C-e -> eval
    + run-ocaml
+the 4 key combos saves a lot of trouble.
 
-4. Batterries-include is a collection of good modules, the community's working hard to make it portable.
+1. Batterries-include is a collection of good modules, the community's working hard to make it portable.
+2. Core by JaneStreet is alternative to Ocaml standard library, later.
+3. Compile
+   + camlc   -> bytecode
+   + camlopt -> native code
+   native code object files produced by ocamlopt cannot be loaded in the toplevel system OCAML

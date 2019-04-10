@@ -23,32 +23,67 @@ let rec my_kth k = function (*--- Curry ---*)
 
 (*----------------------------------------------------*)
 (* 4. list length  *)
+(* my_llen fail to return length of a integer list=range(1,10000000) *)             
 let rec my_llen ll = match ll with
 | [] -> 0
 | _ :: rest -> 1 + my_llen rest
 
-let rec my_llen2 k = function
-| [] -> k
-| _ :: rest -> my_llen2 (k+1) rest
+(* my_llen2 is ok with list=range(1,10000000) *)
+let my_llen2 ll = 
+  let rec _curry k = function
+    | [] -> k
+    | _ :: rest -> _curry (k+1) rest in
+  _curry 0 ll
+                 
+(*----------------------------------------------------*)
+(* 5. reverse list  *)
+let my_rev ll =
+  let rec _curry acc = function
+    | [] -> acc
+    | a::rest -> _curry (a::acc) rest in
+  _curry [] ll
 
-(*
-let in_channel = open_in "/usr/lib/ocaml/unix.mli" in
-try
-	while true do
-		  let line = input_line in_channel in
-		  	  print_endline line
-		  done
-with End_of_file -> close_in in_channel		  
 
-let line_stream_of_channel channel =
-    Stream.from
-    (fun _ ->
-       try Some (input_line channel) with End_of_file -> None);;
- *)
-             
-let in_channel = open_in "/usr/lib/ocaml/arg.ml";;
-let line = line_stream_of_channel in
-	print_endline line
+(*----------------------------------------------------*)
+(* 6. palindrome list  *)
+(* Assert "forward > backward" only happens when input list is []. by defination it's a palindrome *)
+let my_palindrome ll =
+  let rec _curry forward backward ll = match backward - forward with
+    (*    | (fun x -> x < 0) -> true ???????????????? should be a idomatic grammer for this pattern   *)
+    | 0 -> true
+    | 1 -> if (List.nth ll forward) = (List.nth ll backward) then true else false
+    | _ -> if forward > backward then true
+           else  _curry (forward +1) (backward -1) ll
+  in _curry 0 (List.length ll -1) ll                               
 
-let f n = Sequence.(range 0 10 |> filter_map ~f:(fun x -> if x * x > 3 then Some (x + 1) else None)) ;;
+(*----------------------------------------------------*)
+(* 7. flatten nested list  *)
+type 'a node =
+  | One of 'a 
+  | Many of 'a node list;;
+       
+let nl = [ One "a" ; Many [ One "b" ; Many [ One "c" ; One "d" ] ; One "e" ] ];;
+let nl = [ One 1 ; Many [ One 2 ; Many [ One 3 ; One 4 ] ; One 5] ];;
+let rec my_flatten nl =
+  let rec _curry acc = function 
+  | [] -> acc
+  | One  x :: rest ->  _curry (x :: acc) rest
+  | Many x :: rest ->  _curry (_curry acc x) rest
+  in List.rev (_curry [] nl) ;;
+
+my_flatten nl;;
+
+(*----------------------------------------------------*)
+(* 8. Eliminate consecutive duplicates of list elements. (medium) *)
+let remove_consecutive_duplicates ll =
+  let rec  _curry acc = function
+    | []  -> acc
+    | a :: rest -> if a = (List.hd acc) then _curry acc rest
+                   else _curry (a::acc) rest in
+  List.rev(_curry [List.hd ll] ll);;
+
+remove_consecutive_duplicates ["a";"a";"a";"a";"b";"c";"c";"a";"a";"d";"e";"e";"e";"e"];; 
+
+(*----------------------------------------------------*)
+(* 9. Pack consecutive duplicates of list elements into sublists. (medium)*)
 
