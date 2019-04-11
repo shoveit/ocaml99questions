@@ -77,8 +77,13 @@ let remove_consecutive_duplicates ll =
                    else _curry (a::acc) rest in
   List.rev(_curry [List.hd ll] ll);;
 
-remove_consecutive_duplicates ["a";"a";"a";"a";"b";"c";"c";"a";"a";"d";"e";"e";"e";"e"];; 
+remove_consecutive_duplicates ["a";"a";"a";"a";"b";"c";"c";"a"];; 
 
 (*----------------------------------------------------*)
 (* 9. Pack consecutive duplicates of list elements into sublists. (medium)*)
-
+let pack_duplicates ll =
+  let rec _curry acc = function
+    | [] -> acc
+    | a :: rest -> if List.hd (List.hd acc) = a then _curry ((a::(List.hd acc)) :: (List.tl acc)) rest
+                   else _curry ([[a]] @ acc) rest
+  in List.rev(_curry [[List.hd ll]] ll);;

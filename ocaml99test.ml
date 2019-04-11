@@ -27,7 +27,7 @@ let test7_1 test_ctxt = assert_equal [] (Ocaml99.my_flatten []);;
 let test7_1 test_ctxt = assert_equal ["a";"b";"c";"d"] (Ocaml99.my_flatten  [ Ocaml99.One "a" ; Ocaml99.Many [Ocaml99.One "b" ; Ocaml99.Many [ Ocaml99.One "c" ; Ocaml99.One "d" ]]]);;
 let test7_2 test_ctxt = assert_equal [1;2] (Ocaml99.my_flatten [Ocaml99.One 1; Ocaml99.One 2]);;
 let test8 test_ctxt = assert_equal ["a";"b";"c";"a"] (Ocaml99.remove_consecutive_duplicates ["a";"a";"a";"a";"b";"c";"c";"a"]);;
-
+let test9 test_ctxt = assert_equal [["a"; "a"; "a"; "a"; "a"]; ["b"]; ["c"; "c"]; ["a"; "a"]; ["d"; "d"]; ["e"; "e"; "e"; "e"]] (Ocaml99.pack_duplicates ["a";"a";"a";"a";"b";"c";"c";"a";"a";"d";"d";"e";"e";"e";"e"]);;
 (* Name the test cases and group them together *)
 let suite =
 "suite-A" >:::
@@ -46,6 +46,7 @@ let suite =
   "test7_1" >:: test7_1; 
   "test7_2" >:: test7_2;
   "test8" >:: test8;
+  "test9" >:: test9;
  ]
 ;;
 
