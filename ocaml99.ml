@@ -7,7 +7,6 @@ let rec my_last ll  = match ll with
 
 (* val my_last : 'a list -> 'a option = <fun> *)
 
-
 (*----------------------------------------------------*)
 (* 2. last two elements *)
 let rec my_last2 ll = match ll with
@@ -62,16 +61,12 @@ type 'a node =
   | One of 'a 
   | Many of 'a node list;;
        
-let nl = [ One "a" ; Many [ One "b" ; Many [ One "c" ; One "d" ] ; One "e" ] ];;
-let nl = [ One 1 ; Many [ One 2 ; Many [ One 3 ; One 4 ] ; One 5] ];;
 let rec my_flatten nl =
   let rec _curry acc = function 
   | [] -> acc
   | One  x :: rest ->  _curry (x :: acc) rest
   | Many x :: rest ->  _curry (_curry acc x) rest
   in List.rev (_curry [] nl) ;;
-
-my_flatten nl;;
 
 (*----------------------------------------------------*)
 (* 8. Eliminate consecutive duplicates of list elements. (medium) *)
