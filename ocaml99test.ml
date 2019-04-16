@@ -28,6 +28,10 @@ let test7_1 test_ctxt = assert_equal ["a";"b";"c";"d"] (Ocaml99.my_flatten  [ Oc
 let test7_2 test_ctxt = assert_equal [1;2] (Ocaml99.my_flatten [Ocaml99.One 1; Ocaml99.One 2]);;
 let test8 test_ctxt = assert_equal ["a";"b";"c";"a"] (Ocaml99.remove_consecutive_duplicates ["a";"a";"a";"a";"b";"c";"c";"a"]);;
 let test9 test_ctxt = assert_equal [["a"; "a"; "a"; "a"; "a"]; ["b"]; ["c"; "c"]; ["a"; "a"]; ["d"; "d"]; ["e"; "e"; "e"; "e"]] (Ocaml99.pack_duplicates ["a";"a";"a";"a";"b";"c";"c";"a";"a";"d";"d";"e";"e";"e";"e"]);;
+let test10_1 test_ctxt = assert_equal [] (Ocaml99.rlc []);;
+let test10_2 test_ctxt = assert_equal [("a",4); ("b",1); ("c",2); ("a",2); ("d",1); ("e",4)] (Ocaml99.rlc  ["a";"a";"a";"a";"b";"c";"c";"a";"a";"d";"e";"e";"e";"e"]);;
+let test11 test_ctxt = assert_equal [Ocaml99.Plural ("a",2); Ocaml99.Single "b"; Ocaml99.Plural ("c",2); Ocaml99.Plural ("a",2)] (Ocaml99.mrlc ["a";"a";"b";"c";"c";"a";"a"]);;
+let test12 test_ctxt = assert_equal ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"] (Ocaml99.decode_mrlc [Ocaml99.Plural ("a",4); Ocaml99.Single "b"; Ocaml99.Plural ("c",2); Ocaml99.Plural ("a",2); Ocaml99.Single "d"; Ocaml99.Plural ("e",4)]);;
 (* Name the test cases and group them together *)
 let suite =
 "suite-A" >:::
@@ -47,6 +51,10 @@ let suite =
   "test7_2" >:: test7_2;
   "test8" >:: test8;
   "test9" >:: test9;
+  "test10_1" >:: test10_1;
+  "test10_2" >:: test10_2;
+  "test11" >:: test11;
+  "test12" >:: test12;
  ]
 ;;
 
