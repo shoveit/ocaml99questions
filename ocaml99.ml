@@ -278,3 +278,33 @@ let randomPermutation ll =
   _curry (10*(List.length ll)) ll;;
 
 (* randomPermutation (range 1 20);; *)
+
+(* 26. Generate the combinations of K distinct objects chosen from the N elements of a list. (medium) *)
+
+let rec extract k list =
+  if k <= 0 then [[]]
+  else match list with
+       | [] -> []
+       | h :: tl ->
+          let with_h = List.map (fun l -> h :: l) (extract (k-1) tl) in
+          let without_h = extract k tl in
+          with_h @ without_h;;
+
+let rec kombination k ll = match ll with
+    |[] -> [[]] 
+    |a::rest -> if k <= 0 then [[]]
+                else List.filter (fun x -> List.length x = k) (* If run without filter, kombination will return a lot of list shorter than K, because of the uncompleted list concatenated when ll=[] && K>0 *)
+                       (kombination k rest) @ (List.map (fun x -> a::x) (kombination (k-1) rest)) ;;
+
+(*
+'extract' and 'kombination' are similar but notice the subtle difference:
+kombination explicitly Fliter out shorter list in the result.
+Why there're shorter lists? because the default exit on ll = [] is [[]], 
+it ensures there's always a exit return even K>0 at the time, that return will be concatenate to its prefix part...---> shorter return than K!!
+
+Why 'extract' doesn't have explicit Filter? exit return [] is the key!
+For the same reason 'kombination' keeps shorter returns, 'extract' will filter out shorter return implicitly with List.map to a empty list.
+
+'kombination 5 [1;2]' return [[1;2]] but 'extract 5 [1;2]' return [].
+*)
+
