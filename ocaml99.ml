@@ -308,3 +308,52 @@ For the same reason 'kombination' keeps shorter returns, 'extract' will filter o
 'kombination 5 [1;2]' return [[1;2]] but 'extract 5 [1;2]' return [].
 *)
 
+
+
+(* 27. Group the elements of a set into disjoint subsets. (medium) *)
+let mapi lambda ls =
+  let rec _curry i  = function
+    |[] -> []
+    |a::rest -> (lambda i a) :: _curry (i+1) rest in _curry 0 ls 
+
+let partition  ll sizes =
+  let ps = List.map (fun x -> (x,[]) ) sizes in
+  let rec add2kthPartition k x = function
+    |[] -> []
+    |(cnt, plist) ::rest -> if k = 0
+                            then (cnt-1,(x::plist)) :: rest
+                            else (cnt, plist) :: add2kthPartition (k-1) x rest in
+  let rec expand2allPartition x ps = function
+    |(-1) -> []
+    |k -> (add2kthPartition k x ps) ::  expand2allPartition x ps (k-1) in
+  let rec _curry pslist = function
+    |[] -> pslist
+    |a::rest -> _curry  (List.concat (List.map  (fun ps -> expand2allPartition a ps) pslist)) rest in
+  _curry [ps] ll ;; 
+      
+      
+  let group list sizes =
+      let initial = List.map (fun size -> size, []) sizes in
+  
+      let prepend p list =
+        let emit l acc = l :: acc in
+        let rec aux emit acc = function
+          | [] -> emit [] acc
+        | (n,l) as h :: t ->
+           let acc = if n > 0 then emit ((n-1, p::l) :: t) acc
+                     else acc in
+           aux (fun l acc -> emit (h :: l) acc) acc t
+      in
+       aux emit [] list
+    in
+    let rec aux = function
+      | [] -> [ initial ]
+      | h :: t -> List.concat (List.map (prepend h) (aux t))
+    in
+    let all = aux list in
+    (* Don't forget to eliminate all group sets that have non-full
+       groups *)
+    let complete = List.filter (List.for_all (fun (x,_) -> x = 0)) all in
+     List.map (List.map snd) complete;;                          
+
+(*-----------------*)
